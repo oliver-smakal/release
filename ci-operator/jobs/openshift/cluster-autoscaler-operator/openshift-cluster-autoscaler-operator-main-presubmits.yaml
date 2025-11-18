@@ -297,7 +297,7 @@ presubmits:
     branches:
     - ^main$
     - ^main-
-    cluster: build02
+    cluster: build04
     context: ci/prow/e2e-gcp-periodic-pre
     decorate: true
     labels:
@@ -943,7 +943,6 @@ presubmits:
     name: pull-ci-openshift-cluster-autoscaler-operator-main-okd-scos-e2e-aws-ovn
     optional: true
     rerun_command: /test okd-scos-e2e-aws-ovn
-    skip_if_only_changed: ^docs/|\.md$|^(?:.*/)?(?:\.gitignore|OWNERS|PROJECT|LICENSE)$
     spec:
       containers:
       - args:
@@ -1065,7 +1064,7 @@ presubmits:
     branches:
     - ^main$
     - ^main-
-    cluster: build02
+    cluster: build04
     context: ci/prow/regression-clusterinfra-gcp-ipi-autoscaler
     decorate: true
     labels:

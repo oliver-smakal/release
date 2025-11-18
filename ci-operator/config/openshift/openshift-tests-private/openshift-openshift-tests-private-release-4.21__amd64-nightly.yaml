@@ -387,6 +387,7 @@ tests:
     test:
     - chain: openshift-e2e-test-mco-qe-longrun
     workflow: cucushift-installer-rehearse-aws-ipi
+  timeout: 24h0m0s
 - as: aws-ipi-longduration-mco-p1-f7
   cron: 40 15 4,11,18,25 * *
   steps:
@@ -401,6 +402,7 @@ tests:
     test:
     - chain: openshift-e2e-test-mco-qe-longrun
     workflow: cucushift-installer-rehearse-aws-ipi
+  timeout: 24h0m0s
 - as: aws-ipi-longduration-mco-p2-f7
   cron: 18 0 3,12,19,26 * *
   steps:
@@ -415,6 +417,7 @@ tests:
     test:
     - chain: openshift-e2e-test-mco-qe-longrun
     workflow: cucushift-installer-rehearse-aws-ipi
+  timeout: 24h0m0s
 - as: aws-ipi-longduration-mco-p3-f7
   cron: 43 4 9,16,23,30 * *
   steps:
@@ -429,6 +432,7 @@ tests:
     test:
     - chain: openshift-e2e-test-mco-qe-longrun
     workflow: cucushift-installer-rehearse-aws-ipi
+  timeout: 24h0m0s
 - as: aws-ipi-localzone-byo-subnet-ovn-day2-f7
   cron: 9 10 7,14,21,28 * *
   steps:
@@ -1884,6 +1888,54 @@ tests:
     - ref: openshift-extended-test-longduration
     - ref: openshift-e2e-test-qe-report
     workflow: cucushift-installer-rehearse-azure-aks-hypershift-install
+- as: azure-ipi-ovn-hypershift-guest-f7
+  cron: 5 23 1,8,15,24 * *
+  steps:
+    cluster_profile: azure-qe
+    env:
+      HYPERSHIFT_AZURE_MARKETPLACE_IMAGE_OFFER: aro4
+      HYPERSHIFT_AZURE_MARKETPLACE_IMAGE_PUBLISHER: azureopenshift
+      HYPERSHIFT_AZURE_MARKETPLACE_IMAGE_SKU: aro_419
+      HYPERSHIFT_AZURE_MARKETPLACE_IMAGE_VERSION: 419.6.20250523
+      TEST_FILTERS: ~ChkUpgrade&;~DisconnectedOnly&;~NonPreRelease&;~HyperShiftMGMT&;~MicroShiftOnly&;~NonHyperShiftHOST&;~Serial&;~Disruptive&
+      TEST_TIMEOUT: "30"
+    test:
+    - chain: openshift-e2e-test-hypershift-qe
+    workflow: cucushift-installer-rehearse-azure-hypershift-guest
+- as: azure-ipi-ovn-hypershift-no-marketplace-guest-f14
+  cron: 15 21 15,29 * *
+  steps:
+    cluster_profile: azure-qe
+    env:
+      HYPERSHIFT_AZURE_MARKETPLACE_ENABLED: "false"
+      TEST_FILTERS: ~ChkUpgrade&;~DisconnectedOnly&;~NonPreRelease&;~HyperShiftMGMT&;~MicroShiftOnly&;~NonHyperShiftHOST&;~Serial&;~Disruptive&
+      TEST_TIMEOUT: "30"
+    test:
+    - chain: openshift-e2e-test-hypershift-qe
+    workflow: cucushift-installer-rehearse-azure-hypershift-guest
+- as: azure-ipi-ovn-hypershift-image-generation-guest-f14
+  cron: 13 12 3,17 * *
+  steps:
+    cluster_profile: azure-qe
+    env:
+      HYPERSHIFT_AZURE_IMAGE_GENERATION: Gen1
+      HYPERSHIFT_AZURE_MARKETPLACE_ENABLED: "false"
+      TEST_FILTERS: ~ChkUpgrade&;~DisconnectedOnly&;~NonPreRelease&;~HyperShiftMGMT&;~MicroShiftOnly&;~NonHyperShiftHOST&;~Serial&;~Disruptive&
+    test:
+    - chain: openshift-e2e-test-hypershift-qe
+    workflow: cucushift-installer-rehearse-azure-hypershift-guest
+- as: azure-ipi-ovn-hypershift-mgmt-f7
+  cron: 2 7 3,10,17,26 * *
+  steps:
+    cluster_profile: azure-qe
+    env:
+      HYPERSHIFT_AZURE_MARKETPLACE_IMAGE_OFFER: aro4
+      HYPERSHIFT_AZURE_MARKETPLACE_IMAGE_PUBLISHER: azureopenshift
+      HYPERSHIFT_AZURE_MARKETPLACE_IMAGE_SKU: aro_419
+      HYPERSHIFT_AZURE_MARKETPLACE_IMAGE_VERSION: 419.6.20250523
+    test:
+    - chain: openshift-e2e-test-hypershift-qe-mgmt
+    workflow: cucushift-installer-rehearse-azure-hypershift
 - as: aws-ipi-ovn-hypershift-guest-disable-caps-f14
   capabilities:
   - intranet
@@ -2094,7 +2146,7 @@ tests:
     cluster_profile: equinix-ocp-metal-qe
     env:
       LVM_OPERATOR_SUB_CHANNEL: stable-4.21
-      LVM_OPERATOR_SUB_SOURCE: qe-app-registry
+      LVM_OPERATOR_SUB_SOURCE: lvm-catalogsource
       TEST_FILTERS: ~ChkUpgrade&;~DisconnectedOnly&;~HyperShiftMGMT&;~MicroShiftOnly&;~StagerunOnly;~LSO&;STORAGE&
       TEST_SCENARIOS: \[LVMS\]
     test:
@@ -2109,7 +2161,7 @@ tests:
       CATALOG_SOURCE_NAME: compliance-operator
       FILTERS_ADDITIONAL: ""
       LVM_OPERATOR_SUB_CHANNEL: stable-4.21
-      LVM_OPERATOR_SUB_SOURCE: qe-app-registry
+      LVM_OPERATOR_SUB_SOURCE: lvm-catalogsource
       MULTISTAGE_PARAM_OVERRIDE_INDEX_IMAGE: quay.io/redhat-user-workloads/ocp-isc-tenant/compliance-operator-fbc-4-21@sha256:e8f3cb664058f30a87c5301d861766cdd02f0abcd7782f626f23e1701352cbe8
       TEST_FILTERS: ~HyperShiftMGMT&;~DEPRECATED&;~Disruptive&
       TEST_PARALLEL: "3"
@@ -2131,7 +2183,7 @@ tests:
       E2E_RUN_TAGS: '@complianceoperator'
       FILTERS_ADDITIONAL: ""
       LVM_OPERATOR_SUB_CHANNEL: stable-4.21
-      LVM_OPERATOR_SUB_SOURCE: qe-app-registry
+      LVM_OPERATOR_SUB_SOURCE: lvm-catalogsource
       MULTISTAGE_PARAM_OVERRIDE_INDEX_IMAGE: quay.io/redhat-user-workloads/ocp-isc-tenant/compliance-operator-fbc-4-21@sha256:e8f3cb664058f30a87c5301d861766cdd02f0abcd7782f626f23e1701352cbe8
       TEST_FILTERS: ~HyperShiftMGMT&;~DEPRECATED&;Disruptive&
       TEST_PARALLEL: "3"
@@ -2153,7 +2205,7 @@ tests:
       E2E_RUN_TAGS: '@fio'
       FILTERS_ADDITIONAL: ""
       LVM_OPERATOR_SUB_CHANNEL: stable-4.21
-      LVM_OPERATOR_SUB_SOURCE: qe-app-registry
+      LVM_OPERATOR_SUB_SOURCE: lvm-catalogsource
       MULTISTAGE_PARAM_OVERRIDE_INDEX_IMAGE: quay.io/redhat-user-workloads/ocp-isc-tenant/file-integrity-operator-fbc-4-21@sha256:23898d7bc4b41db420c05b5084d286ac3fffb16480cf3d886726e8dc7d23f494
       TEST_FILTERS: ~HyperShiftMGMT&;~DEPRECATED&
       TEST_PARALLEL: "3"
@@ -2173,7 +2225,7 @@ tests:
       E2E_RUN_TAGS: '@spo'
       FILTERS_ADDITIONAL: ""
       LVM_OPERATOR_SUB_CHANNEL: stable-4.21
-      LVM_OPERATOR_SUB_SOURCE: qe-app-registry
+      LVM_OPERATOR_SUB_SOURCE: lvm-catalogsource
       MULTISTAGE_PARAM_OVERRIDE_INDEX_IMAGE: quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-fbc-4-21@sha256:130ed125d818fec0738302fdb5deb72722db0afbefc3ba67a29a89ab6706a4e6
       TEST_FILTERS: ~HyperShiftMGMT&;~DEPRECATED&
       TEST_PARALLEL: "3"
@@ -2390,7 +2442,7 @@ tests:
     cluster_profile: equinix-ocp-metal-qe
     env:
       LVM_OPERATOR_SUB_CHANNEL: stable-4.21
-      LVM_OPERATOR_SUB_SOURCE: qe-app-registry
+      LVM_OPERATOR_SUB_SOURCE: lvm-catalogsource
     test:
     - chain: openshift-e2e-test-qe-disasterrecovery-sanity
     workflow: cucushift-installer-rehearse-baremetalds-ipi-ovn-lvms

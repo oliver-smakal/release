@@ -451,7 +451,7 @@ presubmits:
     branches:
     - ^release-4\.19$
     - ^release-4\.19-
-    cluster: build02
+    cluster: build08
     context: ci/prow/e2e-gcp-capi-techpreview
     decorate: true
     labels:
@@ -816,7 +816,6 @@ presubmits:
     name: pull-ci-openshift-cluster-api-release-4.19-okd-scos-e2e-aws-ovn
     optional: true
     rerun_command: /test okd-scos-e2e-aws-ovn
-    skip_if_only_changed: ^docs/|\.md$|^(?:.*/)?(?:\.gitignore|OWNERS|PROJECT|LICENSE)$
     spec:
       containers:
       - args:

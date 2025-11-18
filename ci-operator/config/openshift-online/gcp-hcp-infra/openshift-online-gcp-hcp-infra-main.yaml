@@ -1,8 +1,10 @@
+binary_build_commands: make terraform-init
 build_root:
   image_stream_tag:
     name: gcp-hcp-infra-terraform
     namespace: ci
     tag: latest
+  use_build_cache: true
 resources:
   '*':
     limits:
@@ -23,6 +25,11 @@ tests:
   commands: make check-orphan-modules
   container:
     from: src
+- as: generate-bin
+  commands: make terraform-init
+  container:
+    from: bin
+  postsubmit: true
 zz_generated_metadata:
   branch: main
   org: openshift-online
